@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>聊天室</title>
+</head>
+<body>
+    <div id='app'>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let app=new Vue({
+            el:'#app',
+            data:{
+                data:""
+            },
+            created() {
+                
+            },
+            mounted() {
+                if(window.WebSocket){
+                    let ws=new WebSocket("ws://localhost:8081");
+                    ws.onopen=function(e){
+                        console.log("连接服务器成功");
+                        this.hasConnect=true;
+                        ws.send("game1")
+                    }
+                    ws.onmessage=function(e){
+                        console.log('服务器给你发消息了');
+                        this.data=e.data
+                        console.log(this.data)
+                    }
+                    ws.onclose=function(e){
+                        console.log('关闭服务器');
+                    }
+                    ws.onerror=function(e){
+                        console.log('连接出错');
+                    }
+                }else{
+                    console.log('您的浏览器不支持websocket')
+                }
+            },
+            methods: {
+                
+            },
+        })
+    </script>
+</body>
+</html>
